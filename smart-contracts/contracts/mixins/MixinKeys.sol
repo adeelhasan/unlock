@@ -14,7 +14,6 @@ import "../interfaces/IUnlock.sol";
 contract MixinKeys is MixinErrors, MixinLockCore {
   // The struct for a key
   struct Key {
-    uint tokenId;
     uint expirationTimestamp;
   }
 
@@ -120,7 +119,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * @dev This is a modifier
    */
   function _isKey(uint _tokenId) internal view {
-    if (_keys[_tokenId].tokenId == 0) {
+    if (_keys[_tokenId].expirationTimestamp == 0) {
       revert NO_SUCH_KEY();
     }
   }
@@ -202,7 +201,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     tokenId = _totalSupply;
 
     // create the key
-    _keys[tokenId] = Key(tokenId, expirationTimestamp);
+    _keys[tokenId] = Key(expirationTimestamp);
 
     // increase total number of unique owners
     if (totalKeys(_recipient) == 0) {
